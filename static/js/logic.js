@@ -36,8 +36,8 @@ L.control.layers(baseMaps, overlays).addTo(myMap);
 function styleInfo(feature) {
     return {
         color: "red",
-        radius: chooseRadius(feature.properties.mag), //define a function that uses magnitude to define the radius (if magnitude is 0, do a dot)
-        fillColor: chooseColor(feature.geometry.coordinates[2]) //define a function that uses magnitude to define the color
+        radius: chooseRadius(feature.properties.mag), //sets radius based on magnitude
+        fillColor: chooseColor(feature.geometry.coordinates[2]) //sets fillColor based on the depth of the earthquake
     }
 };
 

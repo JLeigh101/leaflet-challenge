@@ -36,7 +36,7 @@ L.control.layers(baseMaps, overlays).addTo(myMap);
 function styleInfo(feature) {
     return {
         color: "red",
-        radius: chooseRadius(feature.properties.mag), //sets radius based on magnitude
+        radius: chooseRadius(feature.properties.mag), //sets radius based on magnitude 
         fillColor: chooseColor(feature.geometry.coordinates[2]) //sets fillColor based on the depth of the earthquake
     }
 };
@@ -51,31 +51,38 @@ function chooseColor(depth) {
     else return "green";
 };
 
+//define a function to determine the radius of each earthquake marker
 function chooseRadius(magnitude) {
-    if (magnitude <= 1) return 5;
-    else if (magnitude > 1 & magnitude <= 2) return 10;
-    else if (magnitude > 2 & magnitude <= 3) return 20;
-    else if (magnitude > 3 & magnitude <= 4) return 30;
-    else if (magnitude > 4 & magnitude <= 5) return 40;
-    else if (magnitude > 5 & magnitude <= 6) return 50;
-    else if (magnitude > 6 & magnitude <= 7) return 60;
-    else return 70; //greater than mag 7 will show up as radius 70
+    return magnitude*5;
 };
+
+//OLD chooseRadius() function format - I realized that you can just multply magnitude by a scalar after I had walked through this
+// function chooseRadius(magnitude) {
+//     if (magnitude <= 1) return 5;
+//     else if (magnitude > 1 & magnitude <= 2) return 10;
+//     else if (magnitude > 2 & magnitude <= 3) return 15;
+//     else if (magnitude > 3 & magnitude <= 4) return 20;
+//     else if (magnitude > 4 & magnitude <= 5) return 25;
+//     else if (magnitude > 5 & magnitude <= 6) return 30;
+//     else if (magnitude > 6 & magnitude <= 7) return 35;
+//     else if (magnitude > 7 & magnitude <= 8) return 40;
+//     else return 45; //greater than mag 7 will show up as radius 70
+// };
 
 //
 d3.json(url).then(function (data) { //pull the earthquake JSON data with d3
     L.geoJson(data, {
-        pointToLayer: function (feature, latlon) {  
-            return L.circleMarker(latlon).bindPopup(feature.id); //creates a circle at latlon and binds a popup with the earthquake id
+        pointToLayer: function (feature, latlon) {  //declare a point to layer function that takes a feature and latlon
+            return L.circleMarker(latlon).bindPopup(feature.id); //function creates a circleMarker at latlon and binds a popup with the earthquake id
         },
-        style: styleInfo
+        style: styleInfo //style the CircleMarker with the styleInfo function as defined above
     }).addTo(earthquake_data); // add the earthquake data to the earthquake_data layergroup / overlay
     earthquake_data.addTo(myMap);
 
     //this function pulls the tectonic plate data and draws a purple line over the plates
-    d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function (data) {
+    d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function (data) { //pulls tectonic data with d3.json
         L.geoJson(data, {
-            color: "purple",
+            color: "purple",  //sets the line color to purple
             weight: 3
         }).addTo(tectonics); //add the tectonic data to the tectonic layergroup / overlay
         tectonics.addTo(myMap);
@@ -100,36 +107,29 @@ legend.onAdd = function(myMap) {
   //add the legend to the map
   legend.addTo(myMap);
 
-//scratch work 
+//scratch work for collecting the necessary data
 //collect data with d3
-d3.json(url).then(function (data) {
-    console.log(data);
-    let features = data.features;
-    console.log(features);
+// d3.json(url).then(function (data) {
+//     console.log(data);
+//     let features = data.features;
+//     console.log(features);
 
-    let results = features.filter(id => id.id == "nc73872510"); //replace the id string with the argument of the function once created
-    let first_result = results[0];
-    console.log(first_result);
-    let geometry = first_result.geometry;
-    console.log(geometry);
-    let coordinates = geometry.coordinates;
-    console.log(coordinates);
-    console.log(coordinates[0]); // longitude
-    console.log(coordinates[1]); // latitude
-    console.log(coordinates[2]); // depth of earthquake
-    let magnitude = first_result.properties.mag;
-    console.log(magnitude);
-    //define depth variable
-    let depth = geometry.coordinates[2];
-    console.log(depth);
+//     let results = features.filter(id => id.id == "nc73872510"); //replace the id string with the argument of the function once created
+//     let first_result = results[0];
+//     console.log(first_result);
+//     let geometry = first_result.geometry;
+//     console.log(geometry);
+//     let coordinates = geometry.coordinates;
+//     console.log(coordinates);
+//     console.log(coordinates[0]); // longitude
+//     console.log(coordinates[1]); // latitude
+//     console.log(coordinates[2]); // depth of earthquake
+//     let magnitude = first_result.properties.mag;
+//     console.log(magnitude);
+//     //define depth variable
+//     let depth = geometry.coordinates[2];
+//     console.log(depth);
+//     let id = first_result.id;
+//     console.log(id);
 
-
-});
-
-//process steps:
-//create a dictionary variable to store lat, lon, and depth based on id
-    //data->features->
-        //geometry.coordinates[0] = lon
-        //geometry.coordinates[1] = lat
-        //geometry.coordinates[2] = depth
-    //data->features->id = unique id for reference
+// });

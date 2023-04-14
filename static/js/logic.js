@@ -44,10 +44,10 @@ function styleInfo(feature) {
 //define a function to choose the fillColor of the earthquake based on earthquake depth
 function chooseColor(depth) {
     if (depth <= 10) return "red";
-    else if (depth > 10 & depth <= 20) return "pink";
-    else if (depth > 20 & depth <= 30) return "orange";
-    else if (depth > 30 & depth <= 40) return "yellow";
-    else if (depth > 40 & depth <= 50) return "blue";
+    else if (depth > 10 & depth <= 25) return "pink";
+    else if (depth > 25 & depth <= 40) return "orange";
+    else if (depth > 40 & depth <= 55) return "yellow";
+    else if (depth > 55 & depth <= 70) return "blue";
     else return "green";
 };
 
@@ -57,13 +57,16 @@ function chooseRadius(magnitude) {
     else if (magnitude > 2 & magnitude <= 3) return 20;
     else if (magnitude > 3 & magnitude <= 4) return 30;
     else if (magnitude > 4 & magnitude <= 5) return 40;
+    else if (magnitude > 5 & magnitude <= 6) return 50;
+    else if (magnitude > 6 & magnitude <= 7) return 60;
+    else return 70; //greater than mag 7 will show up as radius 70
 };
 
 //
 d3.json(url).then(function (data) { //pull the earthquake JSON data with d3
     L.geoJson(data, {
-        pointToLayer: function (feature, latlon) {  //feature variable will be unused in this case, latlon is the latlon data for each earthquake
-            return L.circleMarker(latlon);
+        pointToLayer: function (feature, latlon) {  
+            return L.circleMarker(latlon).bindPopup(feature.id); //creates a circle at latlon and binds a popup with the earthquake id
         },
         style: styleInfo
     }).addTo(earthquake_data); // add the earthquake data to the earthquake_data layergroup / overlay
@@ -80,9 +83,24 @@ d3.json(url).then(function (data) { //pull the earthquake JSON data with d3
 
 
 });
+//create legend, credit to this website for the structure: https://codepen.io/haakseth/pen/KQbjdO
+var legend = L.control({ position: "bottomright" });
+legend.onAdd = function(myMap) {
+    var div = L.DomUtil.create("div", "legend");
+       div.innerHTML += "<h4>Depth Color Legend</h4>";
+       div.innerHTML += '<i style="background: red"></i><span>Depth < 10</span><br>';
+       div.innerHTML += '<i style="background: pink"></i><span>10 < Depth <= 25</span><br>';
+       div.innerHTML += '<i style="background: orange"></i><span>25 < Depth <= 40</span><br>';
+       div.innerHTML += '<i style="background: yellow"></i><span>40 < Depth <= 55</span><br>';
+       div.innerHTML += '<i style="background: blue"></i><span>55 < Depth <= 70</span><br>';
+       div.innerHTML += '<i style="background: green"></i><span>Depth > 70</span><br>';
+  
+    return div;
+  };
+  //add the legend to the map
+  legend.addTo(myMap);
 
-
-
+//scratch work 
 //collect data with d3
 d3.json(url).then(function (data) {
     console.log(data);

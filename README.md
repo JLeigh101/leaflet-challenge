@@ -37,3 +37,7 @@ Plot the tectonic plates dataset on the map in addition to the earthquakes.
 Add other base maps to choose from.
 Put each dataset into separate overlays that can be turned on and off independently.
 Add layer controls to your map.
+
+**Acknowledgements**
+-Tutor Kelli Kennedy helped to define some of the initial map structure and syntax, escpecially when it came to defining new layers and editing styling
+-I used this website as a guide for building the map legend: https://codepen.io/haakseth/pen/KQbjdO 

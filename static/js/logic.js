@@ -35,7 +35,7 @@ L.control.layers(baseMaps, overlays).addTo(myMap);
 //this styleInfo function will dictate the stying for all of the earthquake points on the map
 function styleInfo(feature) {
     return {
-        color: "red",
+        color: chooseColor(feature.geometry.coordinates[2]),
         radius: chooseRadius(feature.properties.mag), //sets radius based on magnitude 
         fillColor: chooseColor(feature.geometry.coordinates[2]) //sets fillColor based on the depth of the earthquake
     }
@@ -44,9 +44,9 @@ function styleInfo(feature) {
 //define a function to choose the fillColor of the earthquake based on earthquake depth
 function chooseColor(depth) {
     if (depth <= 10) return "red";
-    else if (depth > 10 & depth <= 25) return "pink";
-    else if (depth > 25 & depth <= 40) return "orange";
-    else if (depth > 40 & depth <= 55) return "yellow";
+    else if (depth > 10 & depth <= 25) return "orange";
+    else if (depth > 25 & depth <= 40) return "yellow";
+    else if (depth > 40 & depth <= 55) return "pink";
     else if (depth > 55 & depth <= 70) return "blue";
     else return "green";
 };
@@ -96,9 +96,9 @@ legend.onAdd = function(myMap) {
     var div = L.DomUtil.create("div", "legend");
        div.innerHTML += "<h4>Depth Color Legend</h4>";
        div.innerHTML += '<i style="background: red"></i><span>(Depth < 10)</span><br>';
-       div.innerHTML += '<i style="background: pink"></i><span>(10 < Depth <= 25)</span><br>';
-       div.innerHTML += '<i style="background: orange"></i><span>(25 < Depth <= 40)</span><br>';
-       div.innerHTML += '<i style="background: yellow"></i><span>(40 < Depth <= 55)</span><br>';
+       div.innerHTML += '<i style="background: orange"></i><span>(10 < Depth <= 25)</span><br>';
+       div.innerHTML += '<i style="background: yellow"></i><span>(25 < Depth <= 40)</span><br>';
+       div.innerHTML += '<i style="background: pink"></i><span>(40 < Depth <= 55)</span><br>';
        div.innerHTML += '<i style="background: blue"></i><span>(55 < Depth <= 70)</span><br>';
        div.innerHTML += '<i style="background: green"></i><span>(Depth > 70)</span><br>';
   
@@ -107,29 +107,29 @@ legend.onAdd = function(myMap) {
   //add the legend to the map
   legend.addTo(myMap);
 
-//scratch work for collecting the necessary data
+//scratch work for collecting the necessary  and console logging
 //collect data with d3
-// d3.json(url).then(function (data) {
-//     console.log(data);
-//     let features = data.features;
-//     console.log(features);
+d3.json(url).then(function (data) {
+    console.log(data);
+    let features = data.features;
+    console.log(features);
 
-//     let results = features.filter(id => id.id == "nc73872510"); //replace the id string with the argument of the function once created
-//     let first_result = results[0];
-//     console.log(first_result);
-//     let geometry = first_result.geometry;
-//     console.log(geometry);
-//     let coordinates = geometry.coordinates;
-//     console.log(coordinates);
-//     console.log(coordinates[0]); // longitude
-//     console.log(coordinates[1]); // latitude
-//     console.log(coordinates[2]); // depth of earthquake
-//     let magnitude = first_result.properties.mag;
-//     console.log(magnitude);
-//     //define depth variable
-//     let depth = geometry.coordinates[2];
-//     console.log(depth);
-//     let id = first_result.id;
-//     console.log(id);
+    let results = features.filter(id => id.id == "nc73872510"); //replace the id string with the argument of the function once created
+    let first_result = results[0];
+    console.log(first_result);
+    let geometry = first_result.geometry;
+    console.log(geometry);
+    let coordinates = geometry.coordinates;
+    console.log(coordinates);
+    console.log(coordinates[0]); // longitude
+    console.log(coordinates[1]); // latitude
+    console.log(coordinates[2]); // depth of earthquake
+    let magnitude = first_result.properties.mag;
+    console.log(magnitude);
+    //define depth variable
+    let depth = geometry.coordinates[2];
+    console.log(depth);
+    let id = first_result.id;
+    console.log(id);
 
-// });
+});

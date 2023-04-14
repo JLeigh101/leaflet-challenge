@@ -83,7 +83,7 @@ d3.json(url).then(function (data) { //pull the earthquake JSON data with d3
 
 
 });
-//create legend, credit to this website for the structure: https://codepen.io/haakseth/pen/KQbjdO
+//create legend, credit to this website for the structure: https://codepen.io/haakseth/pen/KQbjdO -- this structure is referenced in style.css
 var legend = L.control({ position: "bottomright" });
 legend.onAdd = function(myMap) {
     var div = L.DomUtil.create("div", "legend");
